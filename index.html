@@ -118,7 +118,7 @@
                 timerElement.textContent = countdown;
                 if (countdown <= 0) {
                     clearInterval(timer);
-                    window.location.href = '/web/index.html';
+                    window.location.href = '/web/';
                 }
             }, 1000);
         }
@@ -136,13 +136,13 @@
             const portal = urlParams.get('portal');
             
             if (portal === 'admin') {
-                window.location.href = '/admin/index.html';
+                window.location.href = '/admin/';
                 return;
             } else if (portal === 'web') {
-                window.location.href = '/web/index.html';
+                window.location.href = '/web/';
                 return;
             } else if (portal === 'workflow') {
-                window.location.href = '/workflow/index.html';
+                window.location.href = '/workflow/';
                 return;
             }
             
@@ -161,7 +161,7 @@
         <p class="subtitle">Choose your portal to continue</p>
         
         <div class="portal-options">
-            <a href="/web/" class="portal-card" onclick="cancelAutoRedirect()">
+            <a href="/web/index.html" class="portal-card" onclick="cancelAutoRedirect()">
                 <div class="portal-icon">🎨</div>
                 <div class="portal-title">User Portal</div>
                 <div class="portal-description">
@@ -169,7 +169,7 @@
                 </div>
             </a>
             
-            <a href="/admin/" class="portal-card" onclick="cancelAutoRedirect()">
+            <a href="/admin/index.html" class="portal-card" onclick="cancelAutoRedirect()">
                 <div class="portal-icon">🛠️</div>
                 <div class="portal-title">Admin Portal</div>
                 <div class="portal-description">
@@ -177,7 +177,7 @@
                 </div>
             </a>
             
-            <a href="/workflow/" class="portal-card" onclick="cancelAutoRedirect()">
+            <a href="/workflow/index.html" class="portal-card" onclick="cancelAutoRedirect()">
                 <div class="portal-icon">⚡</div>
                 <div class="portal-title">Workflow Portal</div>
                 <div class="portal-description">
