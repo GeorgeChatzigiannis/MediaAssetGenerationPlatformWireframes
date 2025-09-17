@@ -70,23 +70,6 @@
             color: rgba(255, 255, 255, 0.8);
             line-height: 1.4;
         }
-        .auto-redirect {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .auto-redirect-text {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 0.5rem;
-        }
-        .auto-redirect-timer {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #fed7d7;
-        }
         @media (max-width: 900px) {
             .portal-options {
                 grid-template-columns: 1fr;
@@ -108,28 +91,6 @@
         }
     </style>
     <script>
-        let countdown = 10;
-        let timer;
-        
-        function startCountdown() {
-            const timerElement = document.getElementById('countdown');
-            timer = setInterval(() => {
-                countdown--;
-                timerElement.textContent = countdown;
-                if (countdown <= 0) {
-                    clearInterval(timer);
-                    window.location.href = '/web/';
-                }
-            }, 1000);
-        }
-        
-        function cancelAutoRedirect() {
-            if (timer) {
-                clearInterval(timer);
-                document.getElementById('auto-redirect').style.display = 'none';
-            }
-        }
-        
         // Check URL parameters for direct access
         window.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -145,13 +106,6 @@
                 window.location.href = '/workflow/';
                 return;
             }
-            
-            // Start auto-redirect countdown
-            startCountdown();
-            
-            // Cancel auto-redirect on any interaction
-            document.addEventListener('click', cancelAutoRedirect);
-            document.addEventListener('keydown', cancelAutoRedirect);
         });
     </script>
 </head>
@@ -161,7 +115,7 @@
         <p class="subtitle">Choose your portal to continue</p>
         
         <div class="portal-options">
-            <a href="web/index.html" class="portal-card" onclick="cancelAutoRedirect()">
+            <a href="web/index.html" class="portal-card">
                 <div class="portal-icon">🎨</div>
                 <div class="portal-title">User Portal</div>
                 <div class="portal-description">
@@ -169,7 +123,7 @@
                 </div>
             </a>
             
-            <a href="admin/index.html" class="portal-card" onclick="cancelAutoRedirect()">
+            <a href="admin/index.html" class="portal-card">
                 <div class="portal-icon">🛠️</div>
                 <div class="portal-title">Admin Portal</div>
                 <div class="portal-description">
@@ -177,18 +131,13 @@
                 </div>
             </a>
             
-            <a href="workflow/index.html" class="portal-card" onclick="cancelAutoRedirect()">
+            <a href="workflow/index.html" class="portal-card">
                 <div class="portal-icon">⚡</div>
                 <div class="portal-title">Workflow Portal</div>
                 <div class="portal-description">
                     Process workflows, automation tools, and task management
                 </div>
             </a>
-        </div>
-        
-        <div id="auto-redirect" class="auto-redirect">
-            <div class="auto-redirect-text">Auto-redirecting to User Portal in:</div>
-            <div class="auto-redirect-timer"><span id="countdown">10</span> seconds</div>
         </div>
     </div>
 </body>
