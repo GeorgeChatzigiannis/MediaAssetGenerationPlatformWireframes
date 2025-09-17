@@ -118,7 +118,7 @@
                 timerElement.textContent = countdown;
                 if (countdown <= 0) {
                     clearInterval(timer);
-                    window.location.href = '/web/';
+                    window.location.href = '/web/index.html';
                 }
             }, 1000);
         }
@@ -136,13 +136,13 @@
             const portal = urlParams.get('portal');
             
             if (portal === 'admin') {
-                window.location.href = '/admin/';
+                window.location.href = '/admin/index.html';
                 return;
             } else if (portal === 'web') {
-                window.location.href = '/web/';
+                window.location.href = '/web/index.html';
                 return;
             } else if (portal === 'workflow') {
-                window.location.href = '/workflow/';
+                window.location.href = '/workflow/index.html';
                 return;
             }
             
