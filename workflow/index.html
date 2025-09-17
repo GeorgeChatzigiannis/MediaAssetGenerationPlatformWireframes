@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>n8n Workflow - Media Asset Generation Platform</title>
+  <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: #1e1e1e;
+          color: #e0e0e0;
+          overflow: auto;
+          min-height: 100vh;
+      }
+
+      .container {
+          width: 100%;
+          min-height: 100vh;
+          padding: 40px;
+      }
+
+      .header {
+          margin-bottom: 40px;
+          text-align: center;
+      }
+
+      .header h1 {
+          font-size: 28px;
+          font-weight: 600;
+          color: #ffffff;
+          margin-bottom: 10px;
+      }
+
+      .header p {
+          color: #9e9e9e;
+          font-size: 14px;
+      }
+
+      .workflow-canvas {
+          width: 100%;
+          background: #2a2a2a;
+          border-radius: 8px;
+          position: relative;
+          overflow: auto;
+          box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      }
+
+      .canvas-header {
+          background: #1e1e1e;
+          padding: 16px 24px;
+          border-bottom: 1px solid #3a3a3a;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      }
+
+      .workflow-title {
+          font-size: 16px;
+          color: #ffffff;
+          font-weight: 500;
+      }
+
+      .workflow-controls {
+          display: flex;
+          gap: 12px;
+      }
+
+      .control-btn {
+          background: #3a3a3a;
+          border: none;
+          color: #b0b0b0;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-size: 13px;
+          cursor: pointer;
+          transition: all 0.2s;
+      }
+
+      .control-btn:hover {
+          background: #4a4a4a;
+          color: #ffffff;
+      }
+
+      .control-btn.active {
+          background: #ff6d5a;
+          color: #ffffff;
+      }
+
+      svg {
+          display: block;
+          width: 100%;
+          height: auto;
+          min-height: 1800px;
+      }
+
+      /* Node Styles */
+      .node-wrapper {
+          cursor: move;
+      }
+
+      .node-wrapper:hover .node-body {
+          stroke-width: 2;
+      }
+
+      /* Connection Lines */
+      .connection-line {
+          stroke: #4a4a4a;
+          stroke-width: 2;
+          fill: none;
+      }
+
+      .connection-line.active {
+          stroke: #ff6d5a;
+          stroke-width: 3;
+      }
+
+      /* Execution Info */
+      .execution-info {
+          background: #1e1e1e;
+          padding: 20px;
+          border-top: 1px solid #3a3a3a;
+      }
+
+      .execution-stats {
+          display: flex;
+          gap: 40px;
+          margin-bottom: 20px;
+      }
+
+      .stat-item {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+      }
+
+      .stat-label {
+          color: #9e9e9e;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+      }
+
+      .stat-value {
+          color: #ffffff;
+          font-size: 18px;
+          font-weight: 600;
+      }
+
+      .stat-value.success {
+          color: #4ade80;
+      }
+
+      .stat-value.error {
+          color: #ff6d5a;
+      }
+
+      /* Tabs */
+      .tabs {
+          display: flex;
+          gap: 24px;
+          border-bottom: 1px solid #3a3a3a;
+          margin-bottom: 30px;
+      }
+
+      .tab {
+          padding: 12px 0;
+          color: #9e9e9e;
+          font-size: 14px;
+          cursor: pointer;
+          border-bottom: 2px solid transparent;
+          transition: all 0.2s;
+      }
+
+      .tab:hover {
+          color: #ffffff;
+      }
+
+      .tab.active {
+          color: #ff6d5a;
+          border-bottom-color: #ff6d5a;
+      }
+
+      /* Info Cards */
+      .info-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 24px;
+          margin-top: 30px;
+      }
+
+      .info-card {
+          background: #1e1e1e;
+          border: 1px solid #3a3a3a;
+          border-radius: 8px;
+          padding: 20px;
+      }
+
+      .info-card h3 {
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 600;
+          margin-bottom: 16px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+      }
+
+      .info-card ul {
+          list-style: none;
+      }
+
+      .info-card li {
+          color: #b0b0b0;
+          font-size: 13px;
+          padding: 8px 0;
+          border-bottom: 1px solid #2a2a2a;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+      }
+
+      .info-card li:last-child {
+          border-bottom: none;
+      }
+
+      .node-icon {
+          width: 16px;
+          height: 16px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      /* Dot Grid Pattern */
+      .dot-pattern {
+          fill: #3a3a3a;
+          opacity: 0.3;
+      }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Media Asset Generation Platform</h1>
+    <p>Automated RFP-based media asset creation with LLM processing and DynamoDB storage</p>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active">Main Workflow</div>
+    <div class="tab">Async Processing</div>
+    <div class="tab">Error Handling</div>
+    <div class="tab">Notifications</div>
+  </div>
+
+  <div class="workflow-canvas">
+    <div class="canvas-header">
+      <div class="workflow-title">📊 RFP Media Asset Generation Workflow</div>
+      <div class="workflow-controls">
+        <button class="control-btn">Test Workflow</button>
+        <button class="control-btn active">Execute</button>
+        <button class="control-btn">Save</button>
+      </div>
+    </div>
+
+    <svg viewBox="0 0 1600 1800" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Dot Pattern -->
+        <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r="1" class="dot-pattern"/>
+        </pattern>
+
+        <!-- Node Shadow -->
+        <filter id="nodeShadow">
+          <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.15"/>
+        </filter>
+
+        <!-- Connection Dot -->
+        <circle id="connectionDot" r="6" fill="#4a4a4a" stroke="#2a2a2a" stroke-width="2"/>
+
+        <!-- Arrow Marker -->
+        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a4a4a"/>
+        </marker>
+      </defs>
+
+      <!-- Background -->
+      <rect width="1600" height="1800" fill="#2a2a2a"/>
+      <rect width="1600" height="1800" fill="url(#dots)"/>
+
+      <!-- Grid Lines for alignment -->
+      <g opacity="0.1">
+        <line x1="0" y1="100" x2="1600" y2="100" stroke="#4a4a4a" stroke-width="1"/>
+        <line x1="0" y1="300" x2="1600" y2="300" stroke="#4a4a4a" stroke-width="1"/>
+        <line x1="0" y1="500" x2="1600" y2="500" stroke="#4a4a4a" stroke-width="1"/>
+        <line x1="0" y1="700" x2="1600" y2="700" stroke="#4a4a4a" stroke-width="1"/>
+        <line x1="0" y1="900" x2="1600" y2="900" stroke="#4a4a4a" stroke-width="1"/>
+      </g>
+
+      <!-- Main Flow Section -->
+      <text x="80" y="60" fill="#ffffff" font-size="18" font-weight="600">Request Processing Pipeline</text>
+
+      <!-- Webhook Trigger Node -->
+      <g transform="translate(100, 100)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#ff6d5a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#ff6d5a"/>
+        <path d="M 10 15 L 20 15 M 15 10 L 15 20" stroke="#1e1e1e" stroke-width="2"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Webhook Trigger</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">When form submitted</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">POST /api/generate</text>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- Auth Check Node -->
+      <g transform="translate(400, 100)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#fbbf24"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Auth Check</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">JWT Validation</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">OAuth/Platform</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- DynamoDB Create Node -->
+      <g transform="translate(660, 100)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#10b981"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">DynamoDB</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Create Task</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Status: PENDING</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- SQS Queue Node -->
+      <g transform="translate(960, 100)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#f97316"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">SQS Queue</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Send Message</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Async Processing</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- HTTP Response Node -->
+      <g transform="translate(1220, 100)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#06b6d4"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">HTTP Response</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">200 OK</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Task Accepted</text>
+        <use href="#connectionDot" x="0" y="40"/>
+      </g>
+
+      <!-- Async Processing Section -->
+      <text x="80" y="260" fill="#ffffff" font-size="18" font-weight="600">Async Processing with LLM</text>
+
+      <!-- SQS Trigger Node -->
+      <g transform="translate(100, 300)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#ff6d5a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#ff6d5a"/>
+        <path d="M 10 15 L 20 15 M 15 10 L 15 20" stroke="#1e1e1e" stroke-width="2"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">SQS Trigger</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Poll for messages</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Batch: 10</text>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- Get Task Details Node -->
+      <g transform="translate(400, 300)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#10b981"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">DynamoDB</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Get Task</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Fetch Details</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- Update Status Node -->
+      <g transform="translate(660, 300)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#10b981"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">DynamoDB Update</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Status: PROCESSING</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Set Timestamp</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- RFP Parser Node -->
+      <g transform="translate(100, 450)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#fbbf24"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">RFP Parser</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Extract Requirements</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Parse Text</text>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- LLM Context Builder Node -->
+      <g transform="translate(400, 450)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#a855f7"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Context Builder</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Prepare Prompt</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">System + User</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- LLM Processing Node (Highlighted) -->
+      <g transform="translate(700, 450)" class="node-wrapper">
+        <rect x="0" y="0" width="280" height="100" rx="12" fill="#1e1e1e" stroke="#a855f7" stroke-width="2" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="10" fill="#a855f7"/>
+        <path d="M 10 15 L 20 15 M 15 10 L 15 20" stroke="#1e1e1e" stroke-width="2" transform="rotate(45 15 15)"/>
+        <text x="140" y="28" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="600">Custom LLM Engine</text>
+        <text x="140" y="48" text-anchor="middle" fill="#9e9e9e" font-size="12">Media Asset Generation</text>
+        <text x="140" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">GPT-4 / Claude / Custom</text>
+        <text x="140" y="80" text-anchor="middle" fill="#7a7a7a" font-size="10">Temperature: 0.7</text>
+        <use href="#connectionDot" x="0" y="50"/>
+        <use href="#connectionDot" x="280" y="50"/>
+      </g>
+
+      <!-- Response Parser Node -->
+      <g transform="translate(1040, 450)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#a855f7"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Response Parser</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Extract Assets</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Validate Output</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- Asset Processing Section -->
+      <text x="80" y="620" fill="#ffffff" font-size="18" font-weight="600">Asset Processing & Storage</text>
+
+      <!-- Post-Processing Node -->
+      <g transform="translate(100, 660)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#fbbf24"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Post-Processing</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Asset Enhancement</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Optimize & Compress</text>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- S3 Upload Node -->
+      <g transform="translate(400, 660)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#f97316"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">AWS S3</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Upload Assets</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Generate URLs</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- CloudFront Node -->
+      <g transform="translate(660, 660)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#f97316"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">CloudFront</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">CDN Setup</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Edge Caching</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- DynamoDB Final Update Node -->
+      <g transform="translate(920, 660)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#10b981" stroke-width="2" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#10b981"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">DynamoDB Update</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Status: COMPLETED</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Save URLs</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- Notification Section -->
+      <text x="80" y="820" fill="#ffffff" font-size="18" font-weight="600">Notification Pipeline</text>
+
+      <!-- WebSocket Node -->
+      <g transform="translate(100, 860)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#06b6d4"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">WebSocket</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Real-time Update</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Push Event</text>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- Email Node -->
+      <g transform="translate(360, 860)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#f97316"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">AWS SES</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Send Email</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Notification</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- Slack Node -->
+      <g transform="translate(620, 860)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#4ade80"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Slack</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Send Message</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Team Channel</text>
+        <use href="#connectionDot" x="0" y="40"/>
+      </g>
+
+      <!-- Error Handling Section -->
+      <text x="80" y="1020" fill="#ffffff" font-size="18" font-weight="600">Error Handling & Recovery</text>
+
+      <!-- Error Catch Node -->
+      <g transform="translate(100, 1060)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#ef4444" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#ef4444"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Error Handler</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Catch Exceptions</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Retry Logic</text>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- DLQ Node -->
+      <g transform="translate(400, 1060)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#ef4444" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#ef4444"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Dead Letter Queue</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Failed Tasks</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Manual Review</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- CloudWatch Node -->
+      <g transform="translate(660, 1060)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#f97316"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">CloudWatch</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Monitoring</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Logs & Metrics</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- PagerDuty Node -->
+      <g transform="translate(920, 1060)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#ef4444" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#ef4444"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">PagerDuty</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Alert Team</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Critical Issues</text>
+        <use href="#connectionDot" x="0" y="40"/>
+      </g>
+
+      <!-- Scheduled Jobs Section -->
+      <text x="80" y="1220" fill="#ffffff" font-size="18" font-weight="600">Scheduled Jobs & Maintenance</text>
+
+      <!-- Cleanup Cron Node -->
+      <g transform="translate(100, 1260)" class="node-wrapper">
+        <rect x="0" y="0" width="240" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#fbbf24"/>
+        <path d="M 10 10 L 20 10 L 20 20 L 10 20 Z M 15 8 L 15 12 M 22 15 L 18 15" stroke="#1e1e1e" stroke-width="1.5" fill="none"/>
+        <text x="120" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Cleanup Job</text>
+        <text x="120" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Daily @ 2 AM</text>
+        <text x="120" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Remove Old Files</text>
+        <use href="#connectionDot" x="240" y="40"/>
+      </g>
+
+      <!-- Archive Job Node -->
+      <g transform="translate(400, 1260)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#fbbf24"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Archive Job</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Weekly Run</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Move to Glacier</text>
+        <use href="#connectionDot" x="0" y="40"/>
+        <use href="#connectionDot" x="200" y="40"/>
+      </g>
+
+      <!-- Analytics Node -->
+      <g transform="translate(660, 1260)" class="node-wrapper">
+        <rect x="0" y="0" width="200" height="80" rx="12" fill="#1e1e1e" stroke="#4a4a4a" stroke-width="1" filter="url(#nodeShadow)" class="node-body"/>
+        <circle cx="15" cy="15" r="8" fill="#06b6d4"/>
+        <text x="100" y="30" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="500">Analytics</text>
+        <text x="100" y="50" text-anchor="middle" fill="#9e9e9e" font-size="12">Usage Reports</text>
+        <text x="100" y="65" text-anchor="middle" fill="#7a7a7a" font-size="10">Monthly Stats</text>
+        <use href="#connectionDot" x="0" y="40"/>
+      </g>
+
+      <!-- Connection Lines -->
+      <!-- Main Flow -->
+      <path d="M 340 140 L 400 140" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 600 140 L 660 140" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 900 140 L 960 140" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 1160 140 L 1220 140" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+      <!-- Async trigger to processing -->
+      <path d="M 340 340 L 400 340" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 600 340 L 660 340" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 900 340 Q 920 340 920 360 L 920 430 Q 920 450 900 450 L 340 450 Q 320 450 320 470 L 320 490 Q 320 510 340 510 L 340 490" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+      <!-- RFP to LLM flow -->
+      <path d="M 340 490 L 400 490" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 640 490 L 700 490" stroke="#a855f7" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 980 500 L 1040 500" stroke="#a855f7" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+      <!-- LLM to Storage -->
+      <path d="M 1280 490 Q 1300 490 1300 510 L 1300 620 Q 1300 640 1280 640 L 340 640 Q 320 640 320 660 L 320 700 Q 320 720 340 720 L 340 700" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+      <!-- Storage flow -->
+      <path d="M 340 700 L 400 700" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 600 700 L 660 700" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 860 700 L 920 700" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+      <!-- Notifications -->
+      <path d="M 1160 700 Q 1180 700 1180 720 L 1180 820 Q 1180 840 1160 840 L 320 840 Q 300 840 300 860 L 300 900 Q 300 920 300 900" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 300 900 L 360 900" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <path d="M 560 900 L 620 900" stroke="#4a4a4a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+      <!-- Error handling connections -->
+      <path d="M 340 1100 L 400 1100" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+      <path d="M 600 1100 L 660 1100" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+      <path d="M 860 1100 L 920 1100" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+
+      <!-- Scheduled jobs connections -->
+      <path d="M 340 1300 L 400 1300" stroke="#4a4a4a" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrow)"/>
+      <path d="M 600 1300 L 660 1300" stroke="#4a4a4a" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrow)"/>
+
+      <!-- Add execution badges -->
+      <g transform="translate(340, 120)">
+        <rect x="0" y="0" width="40" height="20" rx="4" fill="#10b981"/>
+        <text x="20" y="14" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="600">✓ 243</text>
+      </g>
+
+      <g transform="translate(640, 120)">
+        <rect x="0" y="0" width="40" height="20" rx="4" fill="#10b981"/>
+        <text x="20" y="14" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="600">✓ 243</text>
+      </g>
+
+      <g transform="translate(940, 120)">
+        <rect x="0" y="0" width="40" height="20" rx="4" fill="#10b981"/>
+        <text x="20" y="14" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="600">✓ 242</text>
+      </g>
+
+      <g transform="translate(820, 480)">
+        <rect x="0" y="0" width="60" height="20" rx="4" fill="#a855f7"/>
+        <text x="30" y="14" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="600">AI: 198</text>
+      </g>
+
+      <g transform="translate(340, 1080)">
+        <rect x="0" y="0" width="40" height="20" rx="4" fill="#ef4444"/>
+        <text x="20" y="14" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="600">⚠ 5</text>
+      </g>
