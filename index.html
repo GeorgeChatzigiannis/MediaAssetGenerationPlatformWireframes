@@ -19,8 +19,8 @@
         .portal-container {
             text-align: center;
             padding: 3rem;
-            max-width: 600px;
-            width: 90%;
+            max-width: 900px;
+            width: 95%;
         }
         .main-title {
             font-size: 2.5rem;
@@ -44,7 +44,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 16px;
-            padding: 2.5rem 2rem;
+            padding: 1.5rem 2.5rem;
             text-decoration: none;
             color: white;
             transition: all 0.3s ease;
@@ -86,7 +86,7 @@
                 font-size: 2rem;
             }
             .portal-card {
-                padding: 2rem 1.5rem;
+                padding: 1.25rem 2rem;
             }
         }
     </style>
@@ -96,11 +96,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const portal = urlParams.get('portal');
             
-            if (portal === 'admin') {
-                window.location.href = '/admin/';
-                return;
-            } else if (portal === 'web') {
+            if (portal === 'web') {
                 window.location.href = '/web/';
+                return;
+            } else if (portal === 'requirements') {
+                window.location.href = 'https://docs.google.com/document/d/120SS3iujKajZRY9RQm849XDTR3vkajZKuQbz9gNkHzw/edit?tab=t.0';
                 return;
             } else if (portal === 'workflow') {
                 window.location.href = '/workflow/';
@@ -112,7 +112,6 @@
 <body>
     <div class="portal-container">
         <h1 class="main-title">📋 Media Asset Platform</h1>
-        <p class="subtitle">Choose your portal to continue</p>
         
         <div class="portal-options">
             <a href="web/index.html" class="portal-card">
@@ -123,17 +122,17 @@
                 </div>
             </a>
             
-            <a href="admin/index.html" class="portal-card">
-                <div class="portal-icon">🛠️</div>
-                <div class="portal-title">Admin Portal</div>
+            <a href="https://docs.google.com/document/d/120SS3iujKajZRY9RQm849XDTR3vkajZKuQbz9gNkHzw/edit?tab=t.0" class="portal-card">
+                <div class="portal-icon">📋</div>
+                <div class="portal-title">Project Requirements</div>
                 <div class="portal-description">
-                    System administration, user management, and platform monitoring
+                    View detailed project requirements and specifications document
                 </div>
             </a>
             
             <a href="workflow/index.html" class="portal-card">
                 <div class="portal-icon">⚡</div>
-                <div class="portal-title">Workflow Portal</div>
+                <div class="portal-title">Agentic Workflows</div>
                 <div class="portal-description">
                     Process workflows, automation tools, and task management
                 </div>
