@@ -1,836 +1,1141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media Asset Generation Platform - Wireframes</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            color: white;
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 32px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        .wireframe-section {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .wireframe-title {
-            background: #f8f9fa;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .wireframe-title h2 {
-            color: #2d3748;
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-        
-        .wireframe-title p {
-            color: #718096;
-            font-size: 14px;
-        }
-        
-        .wireframe {
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            background: #fafafa;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Browser Chrome */
-        .browser-bar {
-            background: #2d3748;
-            padding: 12px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid #1a202c;
-        }
-        
-        .browser-dots {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .browser-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        
-        .browser-dot:nth-child(1) { background: #fc5c65; }
-        .browser-dot:nth-child(2) { background: #fed330; }
-        .browser-dot:nth-child(3) { background: #26de81; }
-        
-        .browser-url {
-            flex: 1;
-            background: #1a202c;
-            padding: 8px 15px;
-            border-radius: 4px;
-            color: #a0aec0;
-            font-size: 13px;
-            font-family: 'Monaco', monospace;
-        }
-        
-        /* Common Elements */
-        .page-content {
-            padding: 30px;
-            min-height: 500px;
-            background: white;
-        }
-        
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            position: relative;
-        }
-        
-        .hamburger {
-            width: 24px;
-            height: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-        }
-        
-        .hamburger span {
-            width: 100%;
-            height: 3px;
-            background: #4a5568;
-            border-radius: 2px;
-        }
-        
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 20px;
-            height: 20px;
-            background: #f56565;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            border: 2px solid white;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        /* Sign In Page */
-        .signin-container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 40px;
-            background: #f7fafc;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        
-        .signin-title {
-            text-align: center;
-            font-size: 28px;
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-        
-        .signin-subtitle {
-            text-align: center;
-            color: #718096;
-            margin-bottom: 30px;
-        }
-        
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 25px 0;
-            gap: 15px;
-        }
-        
-        .divider-line {
-            flex: 1;
-            height: 1px;
-            background: #cbd5e0;
-        }
-        
-        .divider-text {
-            color: #718096;
-            font-size: 14px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #4a5568;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            font-size: 14px;
-            background: white;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #5a67d8;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-oauth {
-            background: white;
-            border: 1px solid #e2e8f0;
-            color: #4a5568;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        
-        .btn-oauth:hover {
-            background: #f7fafc;
-            border-color: #cbd5e0;
-        }
-        
-        .oauth-icon {
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        /* Media Asset Form */
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .form-title {
-            font-size: 24px;
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-        
-        .form-description {
-            color: #718096;
-            margin-bottom: 30px;
-        }
-        
-        .textarea-container {
-            position: relative;
-        }
-        
-        .textarea-large {
-            width: 100%;
-            min-height: 400px;
-            padding: 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 15px;
-            font-family: inherit;
-            resize: vertical;
-            background: #fafafa;
-        }
-        
-        .char-counter {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            color: #a0aec0;
-            font-size: 13px;
-            background: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-        
-        .form-helper {
-            margin-top: 10px;
-            padding: 15px;
-            background: #edf2f7;
-            border-radius: 6px;
-            border-left: 3px solid #667eea;
-        }
-        
-        .form-helper-title {
-            font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 8px;
-        }
-        
-        .form-helper-list {
-            color: #718096;
-            font-size: 14px;
-            padding-left: 20px;
-        }
-        
-        .form-helper-list li {
-            margin-bottom: 5px;
-        }
-        
-        .form-actions {
-            margin-top: 30px;
-            display: flex;
-            gap: 15px;
-        }
-        
-        .btn-secondary {
-            background: #edf2f7;
-            color: #4a5568;
-        }
-        
-        .btn-secondary:hover {
-            background: #e2e8f0;
-        }
-        
-        /* Success Page */
-        .success-container {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-            padding: 60px 30px;
-        }
-        
-        .success-icon {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px;
-            background: linear-gradient(135deg, #48bb78, #38a169);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .success-icon::before {
-            content: "✓";
-            font-size: 60px;
-            color: white;
-        }
-        
-        .success-title {
-            font-size: 32px;
-            color: #2d3748;
-            margin-bottom: 15px;
-        }
-        
-        .success-message {
-            color: #718096;
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        
-        .success-details {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 30px;
-        }
-        
-        .success-detail-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .success-detail-item:last-child {
-            border-bottom: none;
-        }
-        
-        .success-detail-label {
-            color: #718096;
-            font-size: 14px;
-        }
-        
-        .success-detail-value {
-            color: #2d3748;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        /* Dropdown Menu */
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 10px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            min-width: 180px;
-            z-index: 100;
-        }
-        
-        .dropdown-arrow {
-            position: absolute;
-            top: -8px;
-            right: 15px;
-            width: 16px;
-            height: 16px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-right: none;
-            border-bottom: none;
-            transform: rotate(45deg);
-        }
-        
-        .dropdown-item {
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #4a5568;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-bottom: 1px solid #f7fafc;
-        }
-        
-        .dropdown-item:last-child {
-            border-bottom: none;
-        }
-        
-        .dropdown-item:hover {
-            background: #f7fafc;
-            color: #667eea;
-        }
-        
-        .dropdown-icon {
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* Tasks Page */
-        .tasks-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .tasks-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .tasks-title {
-            font-size: 28px;
-            color: #2d3748;
-        }
-        
-        .tasks-filter {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .filter-btn {
-            padding: 8px 16px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            background: white;
-            color: #718096;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        
-        .filter-btn.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        
-        .task-category {
-            margin-bottom: 40px;
-        }
-        
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .category-title {
-            font-size: 20px;
-            color: #4a5568;
-            font-weight: 600;
-        }
-        
-        .category-count {
-            background: #edf2f7;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 14px;
-            color: #718096;
-        }
-        
-        .tasks-table {
-            width: 100%;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .table-header {
-            background: #f7fafc;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .table-row {
-            display: grid;
-            grid-template-columns: 1fr 200px 80px;
-            padding: 15px 20px;
-            border-bottom: 1px solid #f7fafc;
-            align-items: center;
-        }
-        
-        .table-row:last-child {
-            border-bottom: none;
-        }
-        
-        .table-row:hover:not(.table-header) {
-            background: #fafafa;
-        }
-        
-        .table-cell {
-            color: #4a5568;
-            font-size: 14px;
-        }
-        
-        .table-header .table-cell {
-            font-weight: 600;
-            color: #718096;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .task-name {
-            font-weight: 500;
-            color: #2d3748;
-        }
-        
-        .task-date {
-            color: #718096;
-        }
-        
-        .task-actions {
-            display: flex;
-            justify-content: flex-end;
-            position: relative;
-        }
-        
-        .action-dots {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: background 0.2s;
-        }
-        
-        .action-dots:hover {
-            background: #edf2f7;
-        }
-        
-        .dots {
-            display: flex;
-            gap: 3px;
-        }
-        
-        .dot {
-            width: 4px;
-            height: 4px;
-            background: #718096;
-            border-radius: 50%;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        
-        .status-pending {
-            background: #fed7d7;
-            color: #c53030;
-        }
-        
-        .status-completed {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-        
-        /* Action Dropdown */
-        .action-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 5px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            min-width: 140px;
-            z-index: 100;
-        }
-        
-        .action-dropdown-item {
-            padding: 10px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #4a5568;
-            cursor: pointer;
-            font-size: 14px;
-            border-bottom: 1px solid #f7fafc;
-        }
-        
-        .action-dropdown-item:last-child {
-            border-bottom: none;
-        }
-        
-        .action-dropdown-item:hover {
-            background: #f7fafc;
-            color: #667eea;
-        }
-        
-        /* Annotations */
-        .annotation {
-            position: absolute;
-            background: #fed7d7;
-            color: #c53030;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 50;
-        }
-        
-        .annotation::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #fed7d7;
-            transform: rotate(45deg);
-        }
-        
-        .annotation-top::after {
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%) rotate(45deg);
-        }
-        
-        .annotation-right::after {
-            left: -4px;
-            top: 50%;
-            transform: translateY(-50%) rotate(45deg);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Asset Generation Platform - Complete User Journey</title>
+  <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 40px 20px;
+          min-height: 100vh;
+      }
+
+      .container {
+          max-width: 1400px;
+          margin: 0 auto;
+      }
+
+      h1 {
+          color: white;
+          text-align: center;
+          margin-bottom: 40px;
+          font-size: 32px;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      }
+
+      .wireframe-section {
+          background: white;
+          border-radius: 16px;
+          padding: 30px;
+          margin-bottom: 30px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      }
+
+      .wireframe-title {
+          background: #f8f9fa;
+          padding: 15px 20px;
+          border-radius: 8px;
+          margin-bottom: 25px;
+          border-left: 4px solid #667eea;
+      }
+
+      .wireframe-title h2 {
+          color: #2d3748;
+          font-size: 20px;
+          margin-bottom: 5px;
+      }
+
+      .wireframe-title p {
+          color: #718096;
+          font-size: 14px;
+      }
+
+      .wireframe {
+          border: 2px solid #e2e8f0;
+          border-radius: 8px;
+          background: #fafafa;
+          position: relative;
+          overflow: hidden;
+      }
+
+      /* Browser Chrome */
+      .browser-bar {
+          background: #2d3748;
+          padding: 12px 15px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          border-bottom: 1px solid #1a202c;
+      }
+
+      .browser-dots {
+          display: flex;
+          gap: 8px;
+      }
+
+      .browser-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+      }
+
+      .browser-dot:nth-child(1) { background: #fc5c65; }
+      .browser-dot:nth-child(2) { background: #fed330; }
+      .browser-dot:nth-child(3) { background: #26de81; }
+
+      .browser-url {
+          flex: 1;
+          background: #1a202c;
+          padding: 8px 15px;
+          border-radius: 4px;
+          color: #a0aec0;
+          font-size: 13px;
+          font-family: 'Monaco', monospace;
+      }
+
+      /* Common Elements */
+      .page-content {
+          padding: 30px;
+          min-height: 500px;
+          background: white;
+      }
+
+      .header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid #e2e8f0;
+      }
+
+      .logo {
+          font-size: 24px;
+          font-weight: bold;
+          color: #667eea;
+      }
+
+      .user-menu {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          position: relative;
+      }
+
+      .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #667eea, #764ba2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+          position: relative;
+          cursor: pointer;
+      }
+
+      .notification-badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          width: 20px;
+          height: 20px;
+          background: #f56565;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 11px;
+          font-weight: bold;
+          border: 2px solid white;
+          animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+      }
+
+      /* Dropdown Menu */
+      .dropdown-menu {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          margin-top: 10px;
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+          min-width: 180px;
+          z-index: 100;
+      }
+
+      .dropdown-arrow {
+          position: absolute;
+          top: -8px;
+          right: 15px;
+          width: 16px;
+          height: 16px;
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-right: none;
+          border-bottom: none;
+          transform: rotate(45deg);
+      }
+
+      .dropdown-item {
+          padding: 12px 20px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          color: #4a5568;
+          cursor: pointer;
+          transition: all 0.2s;
+          border-bottom: 1px solid #f7fafc;
+      }
+
+      .dropdown-item:last-child {
+          border-bottom: none;
+      }
+
+      .dropdown-item:hover {
+          background: #f7fafc;
+          color: #667eea;
+      }
+
+      .dropdown-icon {
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      /* Sign In Page */
+      .signin-container {
+          max-width: 400px;
+          margin: 0 auto;
+          padding: 40px;
+          background: #f7fafc;
+          border-radius: 12px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      }
+
+      .signin-title {
+          text-align: center;
+          font-size: 28px;
+          color: #2d3748;
+          margin-bottom: 10px;
+      }
+
+      .signin-subtitle {
+          text-align: center;
+          color: #718096;
+          margin-bottom: 30px;
+      }
+
+      .divider {
+          display: flex;
+          align-items: center;
+          margin: 25px 0;
+          gap: 15px;
+      }
+
+      .divider-line {
+          flex: 1;
+          height: 1px;
+          background: #cbd5e0;
+      }
+
+      .divider-text {
+          color: #718096;
+          font-size: 14px;
+      }
+
+      .form-group {
+          margin-bottom: 20px;
+      }
+
+      .form-label {
+          display: block;
+          margin-bottom: 8px;
+          color: #4a5568;
+          font-size: 14px;
+          font-weight: 500;
+      }
+
+      .form-input {
+          width: 100%;
+          padding: 12px 15px;
+          border: 1px solid #cbd5e0;
+          border-radius: 6px;
+          font-size: 14px;
+          background: white;
+      }
+
+      .btn {
+          width: 100%;
+          padding: 12px 20px;
+          border: none;
+          border-radius: 6px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s;
+      }
+
+      .btn-primary {
+          background: #667eea;
+          color: white;
+      }
+
+      .btn-primary:hover {
+          background: #5a67d8;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-oauth {
+          background: white;
+          border: 1px solid #e2e8f0;
+          color: #4a5568;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          margin-bottom: 12px;
+      }
+
+      .btn-oauth:hover {
+          background: #f7fafc;
+          border-color: #cbd5e0;
+      }
+
+      .oauth-icon {
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+      }
+
+      /* Dashboard */
+      .dashboard-container {
+          max-width: 1200px;
+          margin: 0 auto;
+      }
+
+      .dashboard-welcome {
+          margin-bottom: 40px;
+      }
+
+      .dashboard-title {
+          font-size: 32px;
+          color: #2d3748;
+          margin-bottom: 10px;
+      }
+
+      .dashboard-subtitle {
+          color: #718096;
+          font-size: 18px;
+      }
+
+      .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 25px;
+          margin-bottom: 40px;
+      }
+
+      .stat-card {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 30px;
+          border-radius: 12px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+          transition: transform 0.3s;
+      }
+
+      .stat-card:hover {
+          transform: translateY(-5px);
+      }
+
+      .stat-card.secondary {
+          background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      }
+
+      .stat-card.tertiary {
+          background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+      }
+
+      .stat-icon {
+          width: 48px;
+          height: 48px;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          margin-bottom: 15px;
+      }
+
+      .stat-value {
+          font-size: 36px;
+          color: white;
+          font-weight: bold;
+          margin-bottom: 5px;
+      }
+
+      .stat-label {
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 14px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+      }
+
+      .action-cards {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 25px;
+      }
+
+      .action-card {
+          background: white;
+          border: 2px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 40px 30px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s;
+      }
+
+      .action-card:hover {
+          border-color: #667eea;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+          transform: translateY(-5px);
+      }
+
+      .action-icon {
+          width: 64px;
+          height: 64px;
+          margin: 0 auto 20px;
+          background: #eef2ff;
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 32px;
+      }
+
+      .action-title {
+          font-size: 20px;
+          color: #2d3748;
+          margin-bottom: 10px;
+          font-weight: 600;
+      }
+
+      .action-description {
+          color: #718096;
+          font-size: 14px;
+          line-height: 1.5;
+      }
+
+      /* Media Asset Form */
+      .form-container {
+          max-width: 800px;
+          margin: 0 auto;
+      }
+
+      .form-title {
+          font-size: 24px;
+          color: #2d3748;
+          margin-bottom: 10px;
+      }
+
+      .form-description {
+          color: #718096;
+          margin-bottom: 30px;
+      }
+
+      .input-container {
+          background: #fafafa;
+          border: 2px solid #e2e8f0;
+          border-radius: 8px;
+          overflow: hidden;
+          transition: all 0.3s;
+      }
+
+      .input-container:focus-within {
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .textarea-wrapper {
+          position: relative;
+      }
+
+      .textarea-large {
+          width: 100%;
+          min-height: 400px;
+          padding: 20px;
+          border: none;
+          font-size: 15px;
+          font-family: inherit;
+          resize: vertical;
+          background: transparent;
+      }
+
+      .textarea-large:focus {
+          outline: none;
+      }
+
+      .char-counter {
+          position: absolute;
+          bottom: 15px;
+          right: 15px;
+          color: #a0aec0;
+          font-size: 13px;
+          background: white;
+          padding: 4px 8px;
+          border-radius: 4px;
+      }
+
+      .attachment-bar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 15px 20px;
+          background: #f7fafc;
+          border-top: 1px solid #e2e8f0;
+      }
+
+      .attachment-left {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+      }
+
+      .attachment-button {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 16px;
+          background: white;
+          border: 1px solid #cbd5e0;
+          border-radius: 6px;
+          color: #4a5568;
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.2s;
+      }
+
+      .attachment-button:hover {
+          background: #eef2ff;
+          border-color: #667eea;
+          color: #667eea;
+      }
+
+      .attachment-info {
+          color: #718096;
+          font-size: 13px;
+      }
+
+      .attached-files {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+      }
+
+      .attached-file {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 10px;
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          font-size: 13px;
+          color: #4a5568;
+      }
+
+      .attached-file-remove {
+          margin-left: 4px;
+          color: #e53e3e;
+          cursor: pointer;
+          font-weight: bold;
+      }
+
+      .attached-file-remove:hover {
+          color: #c53030;
+      }
+
+      .form-helper {
+          margin-top: 10px;
+          padding: 15px;
+          background: #edf2f7;
+          border-radius: 6px;
+          border-left: 3px solid #667eea;
+      }
+
+      .form-helper-title {
+          font-weight: 600;
+          color: #4a5568;
+          margin-bottom: 8px;
+      }
+
+      .form-helper-list {
+          color: #718096;
+          font-size: 14px;
+          padding-left: 20px;
+      }
+
+      .form-helper-list li {
+          margin-bottom: 5px;
+      }
+
+      .form-actions {
+          margin-top: 30px;
+          display: flex;
+          gap: 15px;
+      }
+
+      .btn-secondary {
+          background: #edf2f7;
+          color: #4a5568;
+          padding: 12px 24px;
+          border-radius: 6px;
+          border: none;
+          font-weight: 600;
+          cursor: pointer;
+      }
+
+      .btn-secondary:hover {
+          background: #e2e8f0;
+      }
+
+      /* Success Screen */
+      .success-container {
+          max-width: 600px;
+          margin: 0 auto;
+          text-align: center;
+          padding: 60px 30px;
+      }
+
+      .success-icon {
+          width: 120px;
+          height: 120px;
+          margin: 0 auto 30px;
+          background: linear-gradient(135deg, #48bb78, #38a169);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+      }
+
+      .success-icon::before {
+          content: "✓";
+          font-size: 60px;
+          color: white;
+      }
+
+      .success-title {
+          font-size: 32px;
+          color: #2d3748;
+          margin-bottom: 15px;
+      }
+
+      .success-message {
+          color: #718096;
+          font-size: 18px;
+          line-height: 1.6;
+          margin-bottom: 30px;
+      }
+
+      .success-details {
+          background: #f7fafc;
+          padding: 20px;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+          margin-bottom: 30px;
+      }
+
+      .success-detail-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 10px 0;
+          border-bottom: 1px solid #e2e8f0;
+      }
+
+      .success-detail-item:last-child {
+          border-bottom: none;
+      }
+
+      .success-detail-label {
+          color: #718096;
+          font-size: 14px;
+      }
+
+      .success-detail-value {
+          color: #2d3748;
+          font-weight: 600;
+          font-size: 14px;
+      }
+
+      /* Tasks Page */
+      .tasks-container {
+          max-width: 1200px;
+          margin: 0 auto;
+      }
+
+      .tasks-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+      }
+
+      .tasks-title {
+          font-size: 28px;
+          color: #2d3748;
+      }
+
+      .tasks-navigation {
+          display: flex;
+          gap: 5px;
+          background: #f7fafc;
+          padding: 4px;
+          border-radius: 8px;
+      }
+
+      .nav-tab {
+          padding: 10px 20px;
+          background: transparent;
+          border: none;
+          border-radius: 6px;
+          color: #718096;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s;
+      }
+
+      .nav-tab.active {
+          background: white;
+          color: #667eea;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-tab:hover:not(.active) {
+          color: #4a5568;
+      }
+
+      .tasks-filter {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 20px;
+      }
+
+      .filter-btn {
+          padding: 8px 16px;
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          background: white;
+          color: #718096;
+          font-size: 14px;
+          cursor: pointer;
+      }
+
+      .filter-btn.active {
+          background: #667eea;
+          color: white;
+          border-color: #667eea;
+      }
+
+      .task-category {
+          margin-bottom: 40px;
+      }
+
+      .category-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 20px;
+      }
+
+      .category-title {
+          font-size: 20px;
+          color: #4a5568;
+          font-weight: 600;
+      }
+
+      .category-count {
+          background: #edf2f7;
+          padding: 4px 10px;
+          border-radius: 20px;
+          font-size: 14px;
+          color: #718096;
+      }
+
+      .tasks-table {
+          width: 100%;
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          overflow: hidden;
+      }
+
+      .table-header {
+          background: #f7fafc;
+          border-bottom: 1px solid #e2e8f0;
+      }
+
+      .table-row {
+          display: grid;
+          grid-template-columns: 1fr 200px 80px;
+          padding: 15px 20px;
+          border-bottom: 1px solid #f7fafc;
+          align-items: center;
+      }
+
+      .table-row:last-child {
+          border-bottom: none;
+      }
+
+      .table-row:hover:not(.table-header) {
+          background: #fafafa;
+      }
+
+      .table-cell {
+          color: #4a5568;
+          font-size: 14px;
+      }
+
+      .table-header .table-cell {
+          font-weight: 600;
+          color: #718096;
+          font-size: 13px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+      }
+
+      .task-name {
+          font-weight: 500;
+          color: #2d3748;
+      }
+
+      .task-date {
+          color: #718096;
+      }
+
+      .task-actions {
+          display: flex;
+          justify-content: flex-end;
+          position: relative;
+      }
+
+      .action-dots {
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          border-radius: 6px;
+          transition: background 0.2s;
+      }
+
+      .action-dots:hover {
+          background: #edf2f7;
+      }
+
+      .dots {
+          display: flex;
+          gap: 3px;
+      }
+
+      .dot {
+          width: 4px;
+          height: 4px;
+          background: #718096;
+          border-radius: 50%;
+      }
+
+      .status-badge {
+          display: inline-block;
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 600;
+          margin-left: 10px;
+      }
+
+      .status-pending {
+          background: #fed7d7;
+          color: #c53030;
+      }
+
+      .status-completed {
+          background: #c6f6d5;
+          color: #22543d;
+      }
+
+      /* Action Dropdown */
+      .action-dropdown {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          margin-top: 5px;
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+          min-width: 140px;
+          z-index: 100;
+      }
+
+      .action-dropdown-item {
+          padding: 10px 15px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: #4a5568;
+          cursor: pointer;
+          font-size: 14px;
+          border-bottom: 1px solid #f7fafc;
+      }
+
+      .action-dropdown-item:last-child {
+          border-bottom: none;
+      }
+
+      .action-dropdown-item:hover {
+          background: #f7fafc;
+          color: #667eea;
+      }
+
+      /* Annotations */
+      .annotation {
+          position: absolute;
+          background: #fed7d7;
+          color: #c53030;
+          padding: 8px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 600;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          z-index: 50;
+      }
+
+      .annotation::after {
+          content: '';
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          background: #fed7d7;
+          transform: rotate(45deg);
+      }
+
+      .annotation-top::after {
+          bottom: -4px;
+          left: 50%;
+          transform: translateX(-50%) rotate(45deg);
+      }
+
+      .annotation-right::after {
+          left: -4px;
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+      }
+
+      .annotation-left::after {
+          right: -4px;
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+      }
+
+      .highlight-box {
+          border: 2px solid #f56565 !important;
+          background: #fff5f5 !important;
+      }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📋 Media Asset Generation Platform - User Journey Wireframes</h1>
-        
-        <!-- Wireframe 1: Sign In -->
-        <div class="wireframe-section">
-            <div class="wireframe-title">
-                <h2>Step 1: Authentication Screen</h2>
-                <p>User signs in using platform credentials or OAuth providers</p>
-            </div>
-            <div class="wireframe">
-                <div class="browser-bar">
-                    <div class="browser-dots">
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                    </div>
-                    <div class="browser-url">https://platform.mediaassets.com/signin</div>
-                </div>
-                <div class="page-content">
-                    <div class="signin-container">
-                        <h2 class="signin-title">Sign In</h2>
-                        <p class="signin-subtitle">Access your media asset platform</p>
-                        
-                        <button class="btn btn-oauth">
-                            <span class="oauth-icon" style="color: #4285f4;">G</span>
-                            Continue with Google
-                        </button>
-                        
-                        <button class="btn btn-oauth">
-                            <span class="oauth-icon" style="color: #0078d4;">M</span>
-                            Continue with Microsoft
-                        </button>
-                        
-                        <div class="divider">
-                            <div class="divider-line"></div>
-                            <div class="divider-text">OR</div>
-                            <div class="divider-line"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Email Address</label>
-                            <input type="email" class="form-input" placeholder="you@company.com">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-input" placeholder="Enter your password">
-                        </div>
-                        
-                        <button class="btn btn-primary">Sign In</button>
-                        
-                        <div style="text-align: center; margin-top: 20px;">
-                            <a href="#" style="color: #667eea; text-decoration: none; font-size: 14px;">Forgot password?</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container">
+  <h1>📋 Media Asset Generation Platform - Complete User Journey</h1>
+
+  <!-- Wireframe 1: Sign In -->
+  <div class="wireframe-section">
+    <div class="wireframe-title">
+      <h2>Step 1: Authentication Screen</h2>
+      <p>User signs in using platform credentials or OAuth providers</p>
+    </div>
+    <div class="wireframe">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
         </div>
-        
-        <!-- Wireframe 2: Media Asset Form -->
-        <div class="wireframe-section">
-            <div class="wireframe-title">
-                <h2>Step 2: Media Asset Generation Form</h2>
-                <p>User submits detailed RFP requirements for asset generation</p>
+        <div class="browser-url">https://platform.mediaassets.com/signin</div>
+      </div>
+      <div class="page-content">
+        <div class="signin-container">
+          <h2 class="signin-title">Sign In</h2>
+          <p class="signin-subtitle">Access your media asset platform</p>
+
+          <button class="btn btn-oauth">
+            <span class="oauth-icon" style="color: #4285f4;">G</span>
+            Continue with Google
+          </button>
+
+          <button class="btn btn-oauth">
+            <span class="oauth-icon" style="color: #0078d4;">M</span>
+            Continue with Microsoft
+          </button>
+
+          <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">OR</div>
+            <div class="divider-line"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" placeholder="you@company.com">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" placeholder="Enter your password">
+          </div>
+
+          <button class="btn btn-primary">Sign In</button>
+
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="#" style="color: #667eea; text-decoration: none; font-size: 14px;">Forgot password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wireframe 2: Dashboard Landing Page -->
+  <div class="wireframe-section">
+    <div class="wireframe-title">
+      <h2>Step 2: Dashboard - Landing Page After Login</h2>
+      <p>Shows task statistics and navigation options</p>
+    </div>
+    <div class="wireframe">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+        </div>
+        <div class="browser-url">https://platform.mediaassets.com/dashboard</div>
+      </div>
+      <div class="page-content">
+        <div class="header">
+          <div class="logo">MediaAsset Pro</div>
+          <div class="user-menu">
+            <div class="avatar">JD</div>
+          </div>
+        </div>
+
+        <div class="dashboard-container">
+          <div class="dashboard-welcome">
+            <h1 class="dashboard-title">Welcome Back, John!</h1>
+            <p class="dashboard-subtitle">Here's an overview of your media asset generation activity</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📊</div>
+              <div class="stat-value">48</div>
+              <div class="stat-label">Total Requested</div>
             </div>
-            <div class="wireframe">
-                <div class="browser-bar">
-                    <div class="browser-dots">
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                    </div>
-                    <div class="browser-url">https://platform.mediaassets.com/create</div>
-                </div>
-                <div class="page-content">
-                    <div class="header">
-                        <div style="display: flex; align-items: center; gap: 20px;">
-                            <div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="logo">MediaAsset Pro</div>
-                        </div>
-                        <div class="user-menu">
-                            <div class="avatar">JD</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-container">
-                        <h2 class="form-title">Generate Media Asset</h2>
-                        <p class="form-description">Provide detailed requirements from your RFP to generate custom media assets</p>
-                        
-                        <div class="textarea-container">
-                            <textarea class="textarea-large" placeholder="Enter your detailed RFP requirements here...
+            <div class="stat-card secondary">
+              <div class="stat-icon">✅</div>
+              <div class="stat-value">42</div>
+              <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card tertiary">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-value">6</div>
+              <div class="stat-label">In Progress</div>
+            </div>
+          </div>
+
+          <div class="action-cards">
+            <div class="action-card highlight-box">
+              <div class="action-icon">✨</div>
+              <h3 class="action-title">Generate Media Asset</h3>
+              <p class="action-description">Create new media assets from your RFP requirements with AI-powered generation</p>
+            </div>
+            <div class="action-card">
+              <div class="action-icon">📋</div>
+              <h3 class="action-title">View Tasks</h3>
+              <p class="action-description">Monitor all your pending and completed media generation tasks</p>
+            </div>
+          </div>
+
+          <div class="annotation annotation-right" style="top: 450px; right: -180px; width: 150px;">
+            Click to create new asset
+          </div>
+
+          <div class="annotation annotation-left" style="top: 450px; left: -150px; width: 130px;">
+            View all tasks
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wireframe 3: Media Asset Form with Integrated Attachments -->
+  <div class="wireframe-section">
+    <div class="wireframe-title">
+      <h2>Step 3: Media Asset Generation Form</h2>
+      <p>User submits RFP requirements with integrated file attachment option</p>
+    </div>
+    <div class="wireframe">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+        </div>
+        <div class="browser-url">https://platform.mediaassets.com/create</div>
+      </div>
+      <div class="page-content">
+        <div class="header">
+          <div class="logo">MediaAsset Pro</div>
+          <div class="user-menu">
+            <div class="avatar">JD</div>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <h2 class="form-title">Generate Media Asset</h2>
+          <p class="form-description">
+            Provide detailed requirements from your RFP to generate custom media assets
+          </p>
+
+          <div class="input-container">
+            <div class="textarea-wrapper">
+                                <textarea class="textarea-large" placeholder="Enter your detailed RFP requirements here...
 
 Example:
 - Asset Type: Marketing video for product launch
@@ -840,429 +1145,467 @@ Example:
 - Duration: 30-60 seconds
 - Deliverables: MP4 format, 1080p resolution
 - Additional Requirements: Include company logo, modern transitions, upbeat background music"></textarea>
-                            <div class="char-counter">0 / 5000</div>
-                        </div>
-                        
-                        <div class="form-helper">
-                            <div class="form-helper-title">💡 Tips for better results:</div>
-                            <ul class="form-helper-list">
-                                <li>Include specific brand guidelines and color schemes</li>
-                                <li>Mention target audience demographics and preferences</li>
-                                <li>Specify desired format, resolution, and duration</li>
-                                <li>Add any compliance or regulatory requirements</li>
-                                <li>Include reference materials or style preferences</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button class="btn btn-primary" style="flex: 1;">Submit Request</button>
-                            <button class="btn btn-secondary" style="width: 150px;">Save Draft</button>
-                        </div>
-                    </div>
-                </div>
+              <div class="char-counter">0 / 5000</div>
             </div>
+
+            <div class="attachment-bar">
+              <div class="attachment-left">
+                <button class="attachment-button">
+                  <span>📎</span>
+                  <span>Attach Files</span>
+                </button>
+                <span class="attachment-info">Max 5 files • JPG, PNG, PDF • 10MB each</span>
+              </div>
+              <div class="attached-files">
+                <div class="attached-file">
+                  <span>🖼️</span>
+                  <span>brand-logo.png</span>
+                  <span class="attached-file-remove">×</span>
+                </div>
+                <div class="attached-file">
+                  <span>📄</span>
+                  <span>guidelines.pdf</span>
+                  <span class="attached-file-remove">×</span>
+                </div>
+                <div class="attached-file">
+                  <span>🖼️</span>
+                  <span>product.jpg</span>
+                  <span class="attached-file-remove">×</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-helper">
+            <div class="form-helper-title">💡 Tips for better results:</div>
+            <ul class="form-helper-list">
+              <li>Include specific brand guidelines and color schemes</li>
+              <li>Attach brand logos and relevant visual assets</li>
+              <li>Mention target audience demographics and preferences</li>
+              <li>Specify desired format, resolution, and duration</li>
+              <li>Add any compliance or regulatory requirements</li>
+            </ul>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-primary" style="flex: 1;">Submit Request</button>
+            <button class="btn-secondary" style="width: 150px;">Save Draft</button>
+          </div>
         </div>
-        
-        <!-- Wireframe 3: Success Screen -->
-        <div class="wireframe-section">
-            <div class="wireframe-title">
-                <h2>Step 3: Request Submitted Successfully</h2>
-                <p>Confirmation page with notification details</p>
-            </div>
-            <div class="wireframe">
-                <div class="browser-bar">
-                    <div class="browser-dots">
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                    </div>
-                    <div class="browser-url">https://platform.mediaassets.com/success</div>
-                </div>
-                <div class="page-content">
-                    <div class="header">
-                        <div style="display: flex; align-items: center; gap: 20px;">
-                            <div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="logo">MediaAsset Pro</div>
-                        </div>
-                        <div class="user-menu">
-                            <div class="avatar">JD</div>
-                        </div>
-                    </div>
-                    
-                    <div class="success-container">
-                        <div class="success-icon"></div>
-                        <h2 class="success-title">Request Submitted Successfully!</h2>
-                        <p class="success-message">
-                            Your media asset generation task is being processed in the background. 
-                            You will receive notifications both within the platform and via email 
-                            to john.doe@company.com once the task is completed.
-                        </p>
-                        
-                        <div class="success-details">
-                            <div class="success-detail-item">
-                                <span class="success-detail-label">Request ID</span>
-                                <span class="success-detail-value">#MA-2024-0892</span>
-                            </div>
-                            <div class="success-detail-item">
-                                <span class="success-detail-label">Submitted At</span>
-                                <span class="success-detail-value">Dec 20, 2024 - 2:45 PM</span>
-                            </div>
-                            <div class="success-detail-item">
-                                <span class="success-detail-label">Estimated Time</span>
-                                <span class="success-detail-value">15-30 minutes</span>
-                            </div>
-                            <div class="success-detail-item">
-                                <span class="success-detail-label">Email Notification</span>
-                                <span class="success-detail-value">john.doe@company.com</span>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-primary" style="width: 200px; margin: 0 auto;">View All Tasks</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Wireframe 4: Notification Badge -->
-        <div class="wireframe-section">
-            <div class="wireframe-title">
-                <h2>Step 4: Task Completed - Notification Appears</h2>
-                <p>User sees notification badge on avatar indicating task completion</p>
-            </div>
-            <div class="wireframe">
-                <div class="browser-bar">
-                    <div class="browser-dots">
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                    </div>
-                    <div class="browser-url">https://platform.mediaassets.com/dashboard</div>
-                </div>
-                <div class="page-content">
-                    <div class="header">
-                        <div style="display: flex; align-items: center; gap: 20px;">
-                            <div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="logo">MediaAsset Pro</div>
-                        </div>
-                        <div class="user-menu">
-                            <div class="avatar" style="position: relative;">
-                                JD
-                                <div class="notification-badge">1</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="position: relative;">
-                        <div class="annotation annotation-top" style="top: -80px; right: 40px;">
-                            Task completed! Click avatar to view
-                        </div>
-                        
-                        <div style="padding: 40px; text-align: center;">
-                            <h2 style="color: #2d3748; margin-bottom: 20px;">Welcome Back, John!</h2>
-                            <p style="color: #718096; font-size: 18px;">Your dashboard is ready. You have new notifications.</p>
-                            
-                            <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 800px; margin: 40px auto;">
-                                <div style="background: #f7fafc; padding: 30px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                                    <div style="font-size: 32px; color: #667eea; font-weight: bold;">24</div>
-                                    <div style="color: #718096; margin-top: 10px;">Total Assets</div>
-                                </div>
-                                <div style="background: #f7fafc; padding: 30px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                                    <div style="font-size: 32px; color: #48bb78; font-weight: bold;">18</div>
-                                    <div style="color: #718096; margin-top: 10px;">Completed</div>
-                                </div>
-                                <div style="background: #f7fafc; padding: 30px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                                    <div style="font-size: 32px; color: #ed8936; font-weight: bold;">6</div>
-                                    <div style="color: #718096; margin-top: 10px;">In Progress</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Wireframe 5: Dropdown Menu -->
-        <div class="wireframe-section">
-            <div class="wireframe-title">
-                <h2>Step 5: User Menu Dropdown</h2>
-                <p>User clicks on avatar to reveal dropdown menu with Settings and Tasks options</p>
-            </div>
-            <div class="wireframe">
-                <div class="browser-bar">
-                    <div class="browser-dots">
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                    </div>
-                    <div class="browser-url">https://platform.mediaassets.com/dashboard</div>
-                </div>
-                <div class="page-content">
-                    <div class="header">
-                        <div style="display: flex; align-items: center; gap: 20px;">
-                            <div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="logo">MediaAsset Pro</div>
-                        </div>
-                        <div class="user-menu">
-                            <div class="avatar" style="background: #4a5568;">
-                                JD
-                                <div class="notification-badge">1</div>
-                            </div>
-                            <div class="dropdown-menu">
-                                <div class="dropdown-arrow"></div>
-                                <div class="dropdown-item">
-                                    <div class="dropdown-icon">⚙️</div>
-                                    <span>Settings</span>
-                                </div>
-                                <div class="dropdown-item" style="background: #f7fafc; color: #667eea;">
-                                    <div class="dropdown-icon">📋</div>
-                                    <span>Tasks</span>
-                                    <span style="margin-left: auto; background: #f56565; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px;">1</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="padding: 40px; text-align: center;">
-                        <div class="annotation annotation-right" style="top: 100px; right: -180px; width: 150px;">
-                            User clicks on "Tasks" to view all tasks
-                        </div>
-                        
-                        <h2 style="color: #2d3748; margin-bottom: 20px;">Dashboard</h2>
-                        <p style="color: #718096; font-size: 18px;">Click on Tasks in the dropdown menu to view your media asset requests</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Wireframe 6: Tasks List -->
-        <div class="wireframe-section">
-            <div class="wireframe-title">
-                <h2>Step 6: Tasks Overview Page</h2>
-                <p>Displays pending and completed tasks with action options</p>
-            </div>
-            <div class="wireframe">
-                <div class="browser-bar">
-                    <div class="browser-dots">
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                        <div class="browser-dot"></div>
-                    </div>
-                    <div class="browser-url">https://platform.mediaassets.com/tasks</div>
-                </div>
-                <div class="page-content">
-                    <div class="header">
-                        <div style="display: flex; align-items: center; gap: 20px;">
-                            <div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="logo">MediaAsset Pro</div>
-                        </div>
-                        <div class="user-menu">
-                            <div class="avatar">JD</div>
-                        </div>
-                    </div>
-                    
-                    <div class="tasks-container">
-                        <div class="tasks-header">
-                            <h1 class="tasks-title">My Tasks</h1>
-                            <div class="tasks-filter">
-                                <button class="filter-btn active">All Tasks</button>
-                                <button class="filter-btn">This Week</button>
-                                <button class="filter-btn">This Month</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Pending Tasks -->
-                        <div class="task-category">
-                            <div class="category-header">
-                                <h2 class="category-title">Pending</h2>
-                                <span class="category-count">3 tasks</span>
-                                <span class="status-badge status-pending">In Progress</span>
-                            </div>
-                            <div class="tasks-table">
-                                <div class="table-row table-header">
-                                    <div class="table-cell">Request Name</div>
-                                    <div class="table-cell">Date Issued</div>
-                                    <div class="table-cell" style="text-align: right;">Actions</div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Social Media Campaign Video</div>
-                                    <div class="table-cell task-date">Dec 20, 2024 - 4:30 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Product Demo Animation</div>
-                                    <div class="table-cell task-date">Dec 20, 2024 - 3:15 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Corporate Presentation Template</div>
-                                    <div class="table-cell task-date">Dec 20, 2024 - 2:45 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Completed Tasks -->
-                        <div class="task-category">
-                            <div class="category-header">
-                                <h2 class="category-title">Completed</h2>
-                                <span class="category-count">12 tasks</span>
-                                <span class="status-badge status-completed">Ready</span>
-                            </div>
-                            <div class="tasks-table">
-                                <div class="table-row table-header">
-                                    <div class="table-cell">Request Name</div>
-                                    <div class="table-cell">Date Issued</div>
-                                    <div class="table-cell" style="text-align: right;">Actions</div>
-                                </div>
-                                <div class="table-row" style="background: #fffaf0; border: 2px solid #fed7d7; position: relative;">
-                                    <div class="table-cell task-name">Q4 Marketing Video Asset</div>
-                                    <div class="table-cell task-date">Dec 20, 2024 - 2:00 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots" style="background: #edf2f7;">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                        <div class="action-dropdown">
-                                            <div class="action-dropdown-item">
-                                                <span>📥</span> Download
-                                            </div>
-                                            <div class="action-dropdown-item">
-                                                <span>📁</span> Archive
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="annotation annotation-right" style="top: 10px; right: -200px; width: 180px;">
-                                        User clicks here to see Download and Archive options
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Brand Identity Package</div>
-                                    <div class="table-cell task-date">Dec 19, 2024 - 5:45 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Investor Pitch Deck Design</div>
-                                    <div class="table-cell task-date">Dec 19, 2024 - 3:30 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Website Banner Graphics</div>
-                                    <div class="table-cell task-date">Dec 18, 2024 - 4:15 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Email Campaign Templates</div>
-                                    <div class="table-cell task-date">Dec 18, 2024 - 2:00 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Trade Show Booth Design</div>
-                                    <div class="table-cell task-date">Dec 17, 2024 - 11:30 AM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-row">
-                                    <div class="table-cell task-name">Annual Report Infographics</div>
-                                    <div class="table-cell task-date">Dec 16, 2024 - 3:45 PM</div>
-                                    <div class="table-cell task-actions">
-                                        <div class="action-dots">
-                                            <div class="dots">
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                                <div class="dot"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+      </div>
     </div>
+  </div>
+
+  <!-- Wireframe 4: Success Screen -->
+  <div class="wireframe-section">
+    <div class="wireframe-title">
+      <h2>Step 4: Request Submitted Successfully</h2>
+      <p>Confirmation page with notification details</p>
+    </div>
+    <div class="wireframe">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+        </div>
+        <div class="browser-url">https://platform.mediaassets.com/success</div>
+      </div>
+      <div class="page-content">
+        <div class="header">
+          <div class="logo">MediaAsset Pro</div>
+          <div class="user-menu">
+            <div class="avatar">JD</div>
+          </div>
+        </div>
+
+        <div class="success-container">
+          <div class="success-icon"></div>
+          <h2 class="success-title">Request Submitted Successfully!</h2>
+          <p class="success-message">
+            Your media asset generation task is being processed in the background.
+            You will receive notifications both within the platform and via email
+            to john.doe@company.com once the task is completed.
+          </p>
+
+          <div class="success-details">
+            <div class="success-detail-item">
+              <span class="success-detail-label">Request ID</span>
+              <span class="success-detail-value">#MA-2024-0892</span>
+            </div>
+            <div class="success-detail-item">
+              <span class="success-detail-label">Submitted At</span>
+              <span class="success-detail-value">Dec 20, 2024 - 2:45 PM</span>
+            </div>
+            <div class="success-detail-item">
+              <span class="success-detail-label">Estimated Time</span>
+              <span class="success-detail-value">15-30 minutes</span>
+            </div>
+            <div class="success-detail-item">
+              <span class="success-detail-label">Files Attached</span>
+              <span class="success-detail-value">3 files</span>
+            </div>
+            <div class="success-detail-item">
+              <span class="success-detail-label">Email Notification</span>
+              <span class="success-detail-value">john.doe@company.com</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="width: 200px; margin: 0 auto;">View All Tasks</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wireframe 5: Task Completed with Dropdown Menu -->
+  <div class="wireframe-section">
+    <div class="wireframe-title">
+      <h2>Step 5: Task Completed - Notification with Dropdown Menu</h2>
+      <p>User sees notification badge and clicks avatar to view dropdown menu</p>
+    </div>
+    <div class="wireframe">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+        </div>
+        <div class="browser-url">https://platform.mediaassets.com/dashboard</div>
+      </div>
+      <div class="page-content">
+        <div class="header">
+          <div class="logo">MediaAsset Pro</div>
+          <div class="user-menu">
+            <div class="avatar" style="background: #4a5568;">
+              JD
+              <div class="notification-badge">1</div>
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown-arrow"></div>
+              <div class="dropdown-item">
+                <div class="dropdown-icon">⚙️</div>
+                <span>Settings</span>
+              </div>
+              <div class="dropdown-item" style="background: #f7fafc; color: #667eea;">
+                <div class="dropdown-icon">📋</div>
+                <span>Tasks</span>
+                <span style="margin-left: auto; background: #f56565; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px;">1</span>
+              </div>
+              <div class="dropdown-item">
+                <div class="dropdown-icon">🚪</div>
+                <span>Sign Out</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-container">
+          <div class="dashboard-welcome">
+            <h1 class="dashboard-title">Welcome Back, John!</h1>
+            <p class="dashboard-subtitle">You have a completed task ready for download</p>
+          </div>
+
+          <div class="annotation annotation-top" style="top: -80px; right: 40px;">
+            User clicked avatar to see menu
+          </div>
+
+          <div class="annotation annotation-right" style="top: 40px; right: -180px; width: 150px;">
+            Notification badge on Tasks option
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📊</div>
+              <div class="stat-value">49</div>
+              <div class="stat-label">Total Requested</div>
+            </div>
+            <div class="stat-card secondary">
+              <div class="stat-icon">✅</div>
+              <div class="stat-value">43</div>
+              <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card tertiary">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-value">6</div>
+              <div class="stat-label">In Progress</div>
+            </div>
+          </div>
+
+          <div class="action-cards">
+            <div class="action-card">
+              <div class="action-icon">✨</div>
+              <h3 class="action-title">Generate Media Asset</h3>
+              <p class="action-description">Create new media assets from your RFP requirements with AI-powered generation</p>
+            </div>
+            <div class="action-card">
+              <div class="action-icon">📋</div>
+              <h3 class="action-title">View Tasks</h3>
+              <p class="action-description">Monitor all your pending and completed media generation tasks</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wireframe 6: Tasks Overview - Pending View -->
+  <div class="wireframe-section">
+    <div class="wireframe-title">
+      <h2>Step 6A: Tasks Overview - Pending Tasks</h2>
+      <p>Shows pending tasks with navigation to switch to completed tasks</p>
+    </div>
+    <div class="wireframe">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+        </div>
+        <div class="browser-url">https://platform.mediaassets.com/tasks</div>
+      </div>
+      <div class="page-content">
+        <div class="header">
+          <div class="logo">MediaAsset Pro</div>
+          <div class="user-menu">
+            <div class="avatar">JD</div>
+          </div>
+        </div>
+
+        <div class="tasks-container">
+          <div class="tasks-header">
+            <h1 class="tasks-title">My Tasks</h1>
+            <div class="tasks-navigation">
+              <button class="nav-tab active">Pending Tasks</button>
+              <button class="nav-tab">Completed Tasks</button>
+            </div>
+          </div>
+
+          <div class="annotation annotation-right" style="top: 60px; right: -200px; width: 180px;">
+            Click to switch to Completed Tasks view
+          </div>
+
+          <!-- Pending Tasks -->
+          <div class="task-category">
+            <div class="category-header">
+              <h2 class="category-title">Pending</h2>
+              <span class="category-count">3 tasks</span>
+            </div>
+            <div class="tasks-table">
+              <div class="table-row table-header">
+                <div class="table-cell">Request Name</div>
+                <div class="table-cell">Date Issued</div>
+                <div class="table-cell" style="text-align: right;">Actions</div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Social Media Campaign Video</div>
+                <div class="table-cell task-date">Dec 20, 2024 - 4:30 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Product Demo Animation</div>
+                <div class="table-cell task-date">Dec 20, 2024 - 3:15 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Corporate Presentation Template</div>
+                <div class="table-cell task-date">Dec 20, 2024 - 2:45 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wireframe 7: Tasks Overview - Completed View -->
+  <div class="wireframe-section">
+    <div class="wireframe-title">
+      <h2>Step 6B: Tasks Overview - Completed Tasks</h2>
+      <p>Shows completed tasks with filter defaulting to "This Week"</p>
+    </div>
+    <div class="wireframe">
+      <div class="browser-bar">
+        <div class="browser-dots">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+        </div>
+        <div class="browser-url">https://platform.mediaassets.com/tasks/completed</div>
+      </div>
+      <div class="page-content">
+        <div class="header">
+          <div class="logo">MediaAsset Pro</div>
+          <div class="user-menu">
+            <div class="avatar">JD</div>
+          </div>
+        </div>
+
+        <div class="tasks-container">
+          <div class="tasks-header">
+            <h1 class="tasks-title">My Tasks</h1>
+            <div class="tasks-navigation">
+              <button class="nav-tab">Pending Tasks</button>
+              <button class="nav-tab active">Completed Tasks</button>
+            </div>
+          </div>
+
+          <div class="tasks-filter">
+            <button class="filter-btn">All Time</button>
+            <button class="filter-btn active">This Week</button>
+            <button class="filter-btn">This Month</button>
+            <button class="filter-btn">Last Month</button>
+          </div>
+
+          <div class="annotation annotation-top" style="top: 110px; left: 180px;">
+            Default filter: This Week
+          </div>
+
+          <!-- Completed Tasks -->
+          <div class="task-category">
+            <div class="category-header">
+              <h2 class="category-title">Completed This Week</h2>
+              <span class="category-count">7 tasks</span>
+            </div>
+            <div class="tasks-table">
+              <div class="table-row table-header">
+                <div class="table-cell">Request Name</div>
+                <div class="table-cell">Date Completed</div>
+                <div class="table-cell" style="text-align: right;">Actions</div>
+              </div>
+              <div class="table-row" style="background: #fffaf0; border: 2px solid #fed7d7; position: relative;">
+                <div class="table-cell task-name">Q4 Marketing Video Asset</div>
+                <div class="table-cell task-date">Dec 20, 2024 - 3:30 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots" style="background: #edf2f7;">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                  <div class="action-dropdown">
+                    <div class="action-dropdown-item">
+                      <span>📥</span> Download
+                    </div>
+                    <div class="action-dropdown-item">
+                      <span>📁</span> Archive
+                    </div>
+                  </div>
+                </div>
+                <div class="annotation annotation-right" style="top: 10px; right: -200px; width: 180px;">
+                  User clicks to Download or Archive
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Brand Identity Package</div>
+                <div class="table-cell task-date">Dec 19, 2024 - 5:45 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Investor Pitch Deck Design</div>
+                <div class="table-cell task-date">Dec 19, 2024 - 3:30 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Website Banner Graphics</div>
+                <div class="table-cell task-date">Dec 18, 2024 - 4:15 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Email Campaign Templates</div>
+                <div class="table-cell task-date">Dec 18, 2024 - 2:00 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Trade Show Booth Design</div>
+                <div class="table-cell task-date">Dec 17, 2024 - 11:30 AM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-cell task-name">Annual Report Infographics</div>
+                <div class="table-cell task-date">Dec 16, 2024 - 3:45 PM</div>
+                <div class="table-cell task-actions">
+                  <div class="action-dots">
+                    <div class="dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
